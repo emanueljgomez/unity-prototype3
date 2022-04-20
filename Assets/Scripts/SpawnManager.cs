@@ -30,6 +30,7 @@ public class SpawnManager : MonoBehaviour
         // Only spawn obstacles if the game is not over
         {
             Instantiate(obstaclePrefab, spawnPos, obstaclePrefab.transform.rotation);
+            Debug.Log("Obstacle Spawned!");
         }
     }
 }
