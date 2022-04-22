@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     // Variables
     private Rigidbody playerRb;
+    private Animator playerAnim;
     public float jumpforce;
     public float gravityModifier;
     public bool isOnGround;
@@ -15,16 +16,19 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         playerRb = GetComponent<Rigidbody>();
+        playerAnim = GetComponent<Animator>();
         Physics.gravity *= gravityModifier;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && isOnGround)
+        if (Input.GetKeyDown(KeyCode.Space) && isOnGround && !gameOver)
         {
             playerRb.AddForce(Vector3.up * jumpforce, ForceMode.Impulse);
             isOnGround = false;
+            playerAnim.SetTrigger("Jump_trigger");
+            // Inside Unity: Animator (Controller) > Layer > Jumping --> Click the arrow that goes from 'Run' to 'Running_Jump', then under 'Conditions' check the name of the trigger
         }
     }
 
@@ -39,6 +43,8 @@ public class PlayerController : MonoBehaviour
         {
             gameOver = true;
             Debug.Log("Game Over!");
+            playerAnim.SetBool("Death_b", true); // Animation condition: 'Death_b' parameter for death animation must be true
+            playerAnim.SetInteger("DeathType_int", 1); // Animation condition: set the Condition of death animation to number 1 (the animation is called Death_01)
         }
     }
 }
